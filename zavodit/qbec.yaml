@@ -1,0 +1,60 @@
+apiVersion: qbec.io/v1alpha1
+kind: App
+metadata:
+  name: whoamiapp
+spec:
+  environments:
+    prod:
+      defaultNamespace: default
+      server: https://51.250.99.214:16443
+    dev:
+      defaultNamespace: default
+      server: https://130.193.55.187:16443
+  vars:
+    external:
+      - name: env
+        default: 'prod'
+        # local comm = {
+        #       command: 'helm',
+        #       args: ['template', 'temp', '../vendors/whoami/', '-f -', ],
+        #       stdin: std.manifestJson(p),
+        #   }, comm(helm, args, stdin)
+        # {
+        #   local p = import './params.libsonnet',
+        #   [std.toString(x)]: std.extVar('env')+x for x in std.range(1, std.extVar('amount'))
+        # }
+    computed:
+    - name: c1
+      code: |
+        {
+          local env = std.extVar('qbec.io/env'),
+          local arr = std.range(1, std.extVar('amount')),
+          local p = import './params.libsonnet',
+          command: 'helm',
+          args: ['template', env + '1', '../vendors/whoami/', '-f -', ],
+          stdin: std.manifestJson(p.components.values),
+        }
+    - name: c2
+      code: |
+        {
+          local env = std.extVar('qbec.io/env'),
+          local arr = std.range(1, std.extVar('amount')),
+          local p = import './params.libsonnet',
+          command: 'helm',
+          args: ['template', env + '2', '../vendors/whoami/', '-f -', ],
+          stdin: std.manifestJson(p.components.values2),
+        }
+    - name: c3
+      code: |
+        {
+          local env = std.extVar('qbec.io/env'),
+          local arr = std.range(1, std.extVar('amount')),
+          local p = import './params.libsonnet',
+          command: 'helm',
+          args: ['template', env + '3', '../vendors/whoami/', '-f -', ],
+          stdin: std.manifestJson(p.components.values3),
+        }
+  dataSources:
+    - exec://rendered-template?configVar=c1
+    - exec://rendered-template2?configVar=c2
+    - exec://rendered-template3?configVar=c3
