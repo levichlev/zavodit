@@ -12,7 +12,7 @@ base {
       },
     },
     }, 
-  values2: {
+  values2 +: {
     
       replicaCount: 1,
       resources +: {
@@ -21,7 +21,7 @@ base {
       },
     },
   },
-  values3: {
+  values3 +: {
     
       replicaCount: 1,
       resources +: {
