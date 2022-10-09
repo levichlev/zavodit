@@ -7,10 +7,10 @@ base {
     values +: {
       replicaCount: 3,
     },
-    values2: {
+    values2 +: {
       replicaCount: 1,
     },
-    values3: {
+    values3 +: {
       replicaCount: 2,
     },
   }
